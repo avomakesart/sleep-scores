@@ -1,0 +1,13 @@
+query Scores($limit: Int!, $cursor: String) {
+  scores(limit: $limit, cursor: $cursor) {
+    scores {
+      id
+      duration_asleep
+      duration_in_bed
+      score
+      createdAt
+      updatedAt
+    }
+    hasMore
+  }
+}

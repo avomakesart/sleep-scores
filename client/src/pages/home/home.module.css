@@ -1,0 +1,40 @@
+.dropdown__container {
+    padding: 1rem 0;
+}
+
+
+.button__container {
+    padding: 1rem 0;
+}
+
+.output__container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2rem 0;
+}
+
+.output__card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #E2E8F0;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    margin-top: 3rem;
+}
+
+.output__message--container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.output__message--title {
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.output__message {
+    font-weight: 500;
+    font-size: 1.5rem;
+}

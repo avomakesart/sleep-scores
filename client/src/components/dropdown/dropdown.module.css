@@ -1,0 +1,128 @@
+.dropdown__container {
+    margin-top: 0.25rem;
+    position: relative;
+}
+
+.dropdown__button {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    border-radius: .375rem;
+    border-width: 1px;
+    --dropdown-border-opacity: 1;
+    border-color: rgba(209, 213, 219, var(--dropdown-border-opacity))
+}
+
+.dropdown__button:focus {
+    --dropdown-border-opacity: 1;
+    --dropdown-bg-opacity: 1;
+    border-color: rgba(56, 189, 248, var(--dropdown-border-opacity))
+}
+
+.dropdown__button {
+    --dropdown-bg-opacity: 1;
+    background-color: rgba(255, 255, 255, var(--dropdown-bg-opacity));
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    padding-right: 2.5rem;
+    padding-left: .75rem;
+    text-align: left;
+    --dropdown-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: var(--dropdown-ring-offset-shadow, 0 0 #0000), var(--dropdown-ring-shadow, 0 0 #0000), var(--dropdown-shadow)
+}
+
+.dropdown__button:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    --dropdown-ring-offset-shadow: var(--dropdown-ring-inset) 0 0 0 var(--dropdown-ring-offset-width) var(--dropdown-ring-offset-color);
+    --dropdown-ring-shadow: var(--dropdown-ring-inset) 0 0 0 calc(1px + var(--dropdown-ring-offset-width)) var(--dropdown-ring-color);
+    box-shadow: var(--dropdown-ring-offset-shadow), var(--dropdown-ring-shadow), var(--dropdown-shadow, 0 0 #0000);
+    --dropdown-ring-opacity: 1;
+    --dropdown-ring-color: rgba(99, 102, 241, var(--dropdown-ring-opacity))
+}
+
+.dropdown__button-text--container {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}
+
+.dropdown__button-icon {
+    --dropdown-text-opacity: 1;
+    color: rgb(156 163 175 / var(--dropdown-text-opacity));
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.dropdown__button-icon--container {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin-left: .75rem;
+    display: flex;
+    align-items: center;
+    padding-right: .5rem
+}
+
+.drodown__options--container {
+    position: absolute;
+    z-index: 10;
+    margin-top: .25rem;
+    max-height: 14rem;
+    width: 100%;
+    overflow: auto;
+    border-radius: .375rem;
+    --dropdown-bg-opacity: 1;
+    background-color: rgba(255, 255, 255, var(--dropdown-bg-opacity));
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    --dropdown-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--dropdown-ring-offset-shadow, 0 0 #0000), var(--dropdown-ring-shadow, 0 0 #0000), var(--dropdown-shadow)
+}
+
+.drodown__options--container:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px
+}
+
+.drodown__options--container {
+    --dropdown-ring-inset: ;
+    --dropdown-ring-offset-width: 0px;
+    --dropdown-ring-offset-color: #fff;
+    --dropdown-ring-offset-shadow: var(--dropdown-ring-inset) 0 0 0 var(--dropdown-ring-offset-width) var(--dropdown-ring-offset-color);
+    --dropdown-ring-shadow: var(--dropdown-ring-inset) 0 0 0 calc(1px + var(--dropdown-ring-offset-width)) var(--dropdown-ring-color);
+    box-shadow: var(--dropdown-ring-offset-shadow), var(--dropdown-ring-shadow), var(--dropdown-shadow, 0 0 #0000);
+    --dropdown-ring-opacity: 1;
+    --dropdown-ring-color: rgba(0, 0, 0, var(--dropdown-ring-opacity));
+    --dropdown-ring-opacity: 0.05
+}
+
+@media (min-width:640px) {
+    .dropdown__button {
+        font-size: .875rem;
+        line-height: 1.25rem
+    }
+
+    .drodown__options--container {
+        font-size: .875rem;
+        line-height: 1.25rem
+    }
+}
+
+
+.dropdown__show--options {
+    min-height: 50px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.dropdown__hide--options {
+    min-height: 0;
+    opacity: 0;
+    visibility: hidden;
+}

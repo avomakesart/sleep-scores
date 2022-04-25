@@ -1,0 +1,10 @@
+mutation CreateScore($input: ScoreInput!) {
+  createScore(input: $input) {
+    id
+    duration_asleep
+    duration_in_bed
+    score
+    createdAt
+    updatedAt
+  }
+}

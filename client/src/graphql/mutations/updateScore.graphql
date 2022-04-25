@@ -1,0 +1,10 @@
+mutation UpdateScore($id: Int!, $input: ScoreInput!) {
+  updateScore(id: $id, input: $input) {
+    id
+    duration_asleep
+    duration_in_bed
+    score
+    createdAt
+    updatedAt
+  }
+}

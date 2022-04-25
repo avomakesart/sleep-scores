@@ -1,0 +1,10 @@
+query Score($id: Int!) {
+  score(id: $id) {
+    id
+    duration_asleep
+    duration_in_bed
+    score
+    createdAt
+    updatedAt
+  }
+}

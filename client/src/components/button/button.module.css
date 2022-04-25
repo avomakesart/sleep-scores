@@ -1,0 +1,43 @@
+.button {
+    display: flex;
+    height: 3rem;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    border-radius: .5rem;
+    --button-bg-opacity: 1;
+    background-color: rgba(17, 24, 39, var(--button-bg-opacity))
+}
+
+.button:hover {
+    --button-bg-opacity: 1;
+    background-color: rgba(55, 65, 81, var(--button-bg-opacity))
+}
+
+.button {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    font-weight: 600;
+    --button-text-opacity: 1;
+    color: rgba(255, 255, 255, var(--button-text-opacity))
+}
+
+.button:focus {
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.6);
+}
+
+
+.button[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.button__loading_container {
+    display: flex;
+    align-items: center;
+}
+
+.button__loading_spinner {
+    margin-right: 1rem;
+}
