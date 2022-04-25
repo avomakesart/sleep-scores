@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Button, Container, Dropdown, DropdownItem, SuspenseSpinner } from '../../../components'
+import { BackArrow, Button, Container, Dropdown, DropdownItem, PageHeader, SuspenseSpinner } from '../../../components'
 import { useScoreQuery, useUpdateScoreMutation } from '../../../generated/graphql'
 import { withApollo } from '../../../utils'
 import { formatToHours, generateRange, roundToTwo } from '../../../utils/misc'
@@ -78,48 +78,58 @@ const UpdateScore: React.FC<UpdateScoreProps> = ({}) => {
   }
 
   return (
-    <Container>
-      <div className={styles.dropdown__container}>
-        <Dropdown
-          label="Duration in bed"
-          placeholder="Choose an option"
-          defaultValue={String(data?.score?.duration_in_bed)}
-          onSelect={setSelectedDurationInBed}
-        >
-          {durationInBed.map((inBed: any, index: any) => (
-            <DropdownItem key={`${index}-${inBed.i}`} value={String(inBed.minutes)}>
-              {inBed.time}
-            </DropdownItem>
-          ))}
-        </Dropdown>
-      </div>
-      <div className={styles.dropdown__container}>
-        <Dropdown
-          label="Duration asleep"
-          placeholder="Choose an option"
-          defaultValue={String(data?.score?.duration_asleep)}
-          onSelect={setSelectedDurationAsleep}
-        >
-          {durationAsleep.map((aSleep: any, _index: number) => (
-            <DropdownItem key={`${_index}-${aSleep.i}`} value={String(aSleep.minutes)}>
-              {aSleep.time}
-            </DropdownItem>
-          ))}{' '}
-        </Dropdown>
-      </div>
-      <div className={styles.button__container}>
-        <Button
-          isDisabled={selectedDurationInBed.length && selectedDurationAsleep.length > 0 ? false : true}
-          isLoading={isSubmitting}
-          onClick={handleCalculateSleepBehavior}
-        >
-          Calculate
-        </Button>
-      </div>
-      <div className={styles.output__container}>
-        <span>Select time frames in the dropdowns above to get your sleep behavior</span>
-      </div>
-    </Container>
+    <>
+      <PageHeader spaceTop="0.5rem" spaceLeft="1rem" spaceRight="1rem" justify="space-between">
+        <span style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+          <BackArrow width="1.3em" />
+        </span>
+        <div>
+          <Button onClick={() => navigate('/activity')}>View activity</Button>
+        </div>
+      </PageHeader>
+      <Container>
+        <div className={styles.dropdown__container}>
+          <Dropdown
+            label="Duration in bed"
+            placeholder="Choose an option"
+            defaultValue={String(data?.score?.duration_in_bed)}
+            onSelect={setSelectedDurationInBed}
+          >
+            {durationInBed.map((inBed: any, index: any) => (
+              <DropdownItem key={`${index}-${inBed.i}`} value={String(inBed.minutes)}>
+                {inBed.time}
+              </DropdownItem>
+            ))}
+          </Dropdown>
+        </div>
+        <div className={styles.dropdown__container}>
+          <Dropdown
+            label="Duration asleep"
+            placeholder="Choose an option"
+            defaultValue={String(data?.score?.duration_asleep)}
+            onSelect={setSelectedDurationAsleep}
+          >
+            {durationAsleep.map((aSleep: any, _index: number) => (
+              <DropdownItem key={`${_index}-${aSleep.i}`} value={String(aSleep.minutes)}>
+                {aSleep.time}
+              </DropdownItem>
+            ))}{' '}
+          </Dropdown>
+        </div>
+        <div className={styles.button__container}>
+          <Button
+            isDisabled={selectedDurationInBed.length && selectedDurationAsleep.length > 0 ? false : true}
+            isLoading={isSubmitting}
+            onClick={handleCalculateSleepBehavior}
+          >
+            Calculate
+          </Button>
+        </div>
+        <div className={styles.output__container}>
+          <span>Select time frames in the dropdowns above to get your sleep behavior</span>
+        </div>
+      </Container>
+    </>
   )
 }
 export default withApollo({ ssr: false })(UpdateScore)

@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Container, Dropdown, DropdownItem, DocumentIllustration } from '../../components'
+import {
+  Button,
+  Container,
+  Dropdown,
+  DropdownItem,
+  DocumentIllustration,
+  PageHeader,
+  BackArrow,
+} from '../../components'
 import { formatToHours, generateRange, roundToTwo } from '../../utils/misc'
 import styles from './home.module.css'
 import { useCreateScoreMutation } from '../../generated/graphql'
 import { withApollo } from '../../utils'
+import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
   const [durationInBed, setDurationInBed] = useState<any>([])
@@ -16,6 +25,8 @@ const Home = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showOutput, setShowOutput] = useState(false)
+
+  const navigate = useNavigate()
 
   const [createScore] = useCreateScoreMutation()
 
@@ -61,49 +72,56 @@ const Home = () => {
   }
 
   return (
-    <Container>
-      <div className={styles.dropdown__container}>
-        <Dropdown label="Duration in bed" placeholder="Choose an option" onSelect={setSelectedDurationInBed}>
-          {durationInBed.map((inBed: any, index: any) => (
-            <DropdownItem key={`${index}-${inBed.i}`} value={String(inBed.minutes)}>
-              {inBed.time}
-            </DropdownItem>
-          ))}
-        </Dropdown>
-      </div>
-      <div className={styles.dropdown__container}>
-        <Dropdown label="Duration asleep" placeholder="Choose an option" onSelect={setSelectedDurationAsleep}>
-          {durationAsleep.map((aSleep: any, _index: number) => (
-            <DropdownItem key={`${_index}-${aSleep.i}`} value={String(aSleep.minutes)}>
-              {aSleep.time}
-            </DropdownItem>
-          ))}{' '}
-        </Dropdown>
-      </div>
-      <div className={styles.button__container}>
-        <Button
-          isDisabled={selectedDurationInBed.length && selectedDurationAsleep.length > 0 ? false : true}
-          isLoading={isSubmitting}
-          onClick={handleCalculateSleepScore}
-        >
-          Calculate
-        </Button>
-      </div>
-      <div className={styles.output__container}>
-        <span>Select time frames in the dropdowns above to get your sleep behavior</span>
-        {showOutput && (
-          <div className={styles.output__card}>
-            <div className={styles['output__message--container']}>
-              <span>
-                <DocumentIllustration width="4rem" height="4rem" />
-              </span>
-              <span className={styles['output__message--title']}>Your score is:</span>
-              <span className={styles.output__message}>{String(sleepScore)}</span>
+    <>
+      <PageHeader spaceTop="0.5rem" spaceRight="1rem" justify="flex-end">
+        <div>
+          <Button onClick={() => navigate('/activity')}>View activity</Button>
+        </div>
+      </PageHeader>
+      <Container>
+        <div className={styles.dropdown__container}>
+          <Dropdown label="Duration in bed" placeholder="Choose an option" onSelect={setSelectedDurationInBed}>
+            {durationInBed.map((inBed: any, index: any) => (
+              <DropdownItem key={`${index}-${inBed.i}`} value={String(inBed.minutes)}>
+                {inBed.time}
+              </DropdownItem>
+            ))}
+          </Dropdown>
+        </div>
+        <div className={styles.dropdown__container}>
+          <Dropdown label="Duration asleep" placeholder="Choose an option" onSelect={setSelectedDurationAsleep}>
+            {durationAsleep.map((aSleep: any, _index: number) => (
+              <DropdownItem key={`${_index}-${aSleep.i}`} value={String(aSleep.minutes)}>
+                {aSleep.time}
+              </DropdownItem>
+            ))}{' '}
+          </Dropdown>
+        </div>
+        <div className={styles.button__container}>
+          <Button
+            isDisabled={selectedDurationInBed.length && selectedDurationAsleep.length > 0 ? false : true}
+            isLoading={isSubmitting}
+            onClick={handleCalculateSleepScore}
+          >
+            Calculate
+          </Button>
+        </div>
+        <div className={styles.output__container}>
+          <span>Select time frames in the dropdowns above to get your sleep behavior</span>
+          {showOutput && (
+            <div className={styles.output__card}>
+              <div className={styles['output__message--container']}>
+                <span>
+                  <DocumentIllustration width="4rem" height="4rem" />
+                </span>
+                <span className={styles['output__message--title']}>Your score is:</span>
+                <span className={styles.output__message}>{String(sleepScore)}</span>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-    </Container>
+          )}
+        </div>
+      </Container>
+    </>
   )
 }
 

@@ -5,5 +5,7 @@ export * from './dropdown'
 export * from './icons'
 export * from './illustrations'
 export * from './layout'
+export * from './page-header'
 export * from './spinner'
 export * from './suspense-spinner'
+

@@ -12,7 +12,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     <main className={cn(styles['app-wrapper'], 'app-background')}>
       <div className={styles['main-wrapper']}>
         <div className={styles['main-container']}>
-          <h1 className={styles['app-title']}>Get your sleep behavior</h1>
+          <h1 className={styles['app-title']}>Get your sleep score</h1>
           <Card>{children}</Card>
         </div>
       </div>

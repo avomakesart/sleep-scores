@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useDeleteScoreMutation, useScoreQuery } from '../../../generated/graphql'
-import { Button, Container, SuspenseSpinner } from '../../../components'
+import { BackArrow, Button, Container, PageHeader, SuspenseSpinner } from '../../../components'
 import { withApollo } from '../../../utils'
 import styles from './activity-id.module.css'
 import { formatDate, formatToHours } from '../../../utils/misc'
@@ -27,57 +27,67 @@ const ActivityDetails = () => {
     )
   }
   return (
-    <Container>
-      <div className={styles['activity-id__header--container']}>
-        <h2 className={styles['activity-id__header']}>Sleep information</h2>
-        <span>
-          Full details for score id: <b>{String(data?.score?.id)}</b>
+    <>
+      <PageHeader spaceTop="0.5rem" spaceLeft="1rem" spaceRight="1rem" justify="space-between">
+        <span style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+          <BackArrow width="1.3em" />
         </span>
-      </div>
-      <hr className={styles['activity-id__header--separator']} />
-      <div className={styles.activity__container}>
-        <div className={styles['activity__item--container']}>
-          <span className={styles['activity__item--title']}>Duration in bed: </span>
-          <span className={styles['activity__item--description']}>
-            {formatToHours(Number(data?.score?.duration_in_bed))}
+        <div>
+          <Button onClick={() => navigate('/')}>New sleep score</Button>
+        </div>
+      </PageHeader>
+      <Container>
+        <div className={styles['activity-id__header--container']}>
+          <h2 className={styles['activity-id__header']}>Sleep information</h2>
+          <span>
+            Full details for score id: <b>{String(data?.score?.id)}</b>
           </span>
         </div>
-        <div className={styles['activity__item--container']}>
-          <span className={styles['activity__item--title']}>Duration asleep: </span>
-          <span className={styles['activity__item--description']}>
-            {formatToHours(Number(data?.score?.duration_asleep))}
-          </span>
+        <hr className={styles['activity-id__header--separator']} />
+        <div className={styles.activity__container}>
+          <div className={styles['activity__item--container']}>
+            <span className={styles['activity__item--title']}>Duration in bed: </span>
+            <span className={styles['activity__item--description']}>
+              {formatToHours(Number(data?.score?.duration_in_bed))}
+            </span>
+          </div>
+          <div className={styles['activity__item--container']}>
+            <span className={styles['activity__item--title']}>Duration asleep: </span>
+            <span className={styles['activity__item--description']}>
+              {formatToHours(Number(data?.score?.duration_asleep))}
+            </span>
+          </div>
+          <div className={styles['activity__item--container']}>
+            <span className={styles['activity__item--title']}>Score: </span>
+            <span className={styles['activity__item--description']}>{String(data?.score?.score)}</span>
+          </div>
+          <div className={styles['activity__item--container']}>
+            <span className={styles['activity__item--title']}>Created at: </span>
+            <span className={styles['activity__item--description']}>
+              {formatDate(new Date(Number(data?.score?.createdAt)).toDateString())}
+            </span>
+          </div>
+          <div className={styles['activity__item--container']}>
+            <span className={styles['activity__item--title']}>Updated at: </span>
+            <span className={styles['activity__item--description']}>
+              {formatDate(new Date(Number(data?.score?.updatedAt)).toDateString())}
+            </span>
+          </div>
         </div>
-        <div className={styles['activity__item--container']}>
-          <span className={styles['activity__item--title']}>Score: </span>
-          <span className={styles['activity__item--description']}>{String(data?.score?.score)}</span>
-        </div>
-        <div className={styles['activity__item--container']}>
-          <span className={styles['activity__item--title']}>Created at: </span>
-          <span className={styles['activity__item--description']}>
-            {formatDate(new Date(Number(data?.score?.createdAt)).toDateString())}
-          </span>
-        </div>
-        <div className={styles['activity__item--container']}>
-          <span className={styles['activity__item--title']}>Updated at: </span>
-          <span className={styles['activity__item--description']}>
-            {formatDate(new Date(Number(data?.score?.updatedAt)).toDateString())}
-          </span>
-        </div>
-      </div>
 
-      <div className={styles['activity-id__footer--container']}>
-        <Button
-          className={styles['activity-id__footer--update_button']}
-          onClick={() => navigate(`/activity/update/${id}`)}
-        >
-          Update
-        </Button>
-        <Button className={styles['activity-id__footer--delete_button']} onClick={handleDeleteScore}>
-          Delete
-        </Button>
-      </div>
-    </Container>
+        <div className={styles['activity-id__footer--container']}>
+          <Button
+            className={styles['activity-id__footer--update_button']}
+            onClick={() => navigate(`/activity/update/${id}`)}
+          >
+            Update
+          </Button>
+          <Button className={styles['activity-id__footer--delete_button']} onClick={handleDeleteScore}>
+            Delete
+          </Button>
+        </div>
+      </Container>
+    </>
   )
 }
 

@@ -4,7 +4,7 @@ import { ApolloClient, InMemoryCache } from '@apollo/client'
 
 const client = (ctx: any) =>
   new ApolloClient({
-    uri: 'http://localhost:8000/graphql',
+    uri: 'https://sleep-score.herokuapp.com/graphql',
     credentials: 'include',
     // headers: {
     //   cookie: typeof window === 'undefined' ? ctx?.req?.headers.cookie : undefined || '',

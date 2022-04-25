@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { withApollo } from '../../utils'
 import { useScoresQuery } from '../../generated/graphql'
-import { Container, MoonIcon, SuspenseSpinner } from '../../components'
+import { BackArrow, Button, Container, MoonIcon, PageHeader, SuspenseSpinner } from '../../components'
 import { formatDate, formatToHours } from '../../utils/misc'
 import { useNavigate } from 'react-router-dom'
 import styles from './activity.module.css'
@@ -20,33 +20,45 @@ const Activity = () => {
     )
   }
   return (
-    <Container maxW="50rem">
-      <div className={styles.activity__grid}>
-        {data?.scores.scores.map(({ duration_asleep, duration_in_bed, score, id, createdAt }) => (
-          <div key={id} className={styles.activity__card} onClick={() => navigate(`/activity/${id}`)}>
-            <div className={styles.activity__container}>
-              <div className={styles.activity__content}>
-                <span>
-                  <strong className={styles.activity__title}>Duration in bed:</strong> {formatToHours(Number(duration_in_bed))}
-                </span>
-                <span>
-                  <strong className={styles.activity__title}>Duration asleep:</strong> {formatToHours(Number(duration_asleep))}
-                </span>
-                <span>
-                  <strong className={styles.activity__title}>Score:</strong> {score}
-                </span>
+    <>
+      <PageHeader spaceTop="0.5rem" spaceLeft="1rem" spaceRight="1rem" justify="space-between">
+        <span style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+          <BackArrow width="1.3em" />
+        </span>
+        <div>
+          <Button onClick={() => navigate('/')}>New sleep score</Button>
+        </div>
+      </PageHeader>
+      <Container maxW="50rem">
+        <div className={styles.activity__grid}>
+          {data?.scores.scores.map(({ duration_asleep, duration_in_bed, score, id, createdAt }) => (
+            <div key={id} className={styles.activity__card} onClick={() => navigate(`/activity/${id}`)}>
+              <div className={styles.activity__container}>
+                <div className={styles.activity__content}>
+                  <span>
+                    <strong className={styles.activity__title}>Duration in bed:</strong>{' '}
+                    {formatToHours(Number(duration_in_bed))}
+                  </span>
+                  <span>
+                    <strong className={styles.activity__title}>Duration asleep:</strong>{' '}
+                    {formatToHours(Number(duration_asleep))}
+                  </span>
+                  <span>
+                    <strong className={styles.activity__title}>Score:</strong> {score}
+                  </span>
+                </div>
+                <MoonIcon width="2rem" height="2rem" />
               </div>
-              <MoonIcon width="2rem" height="2rem" />
-            </div>
 
-            <div className={styles['activity__footer--container']}>
-              <strong className={styles.activity__title}>Created at:</strong>
-              <span className={styles.activity__date}>{formatDate(new Date(Number(createdAt)).toDateString())}</span>
+              <div className={styles['activity__footer--container']}>
+                <strong className={styles.activity__title}>Created at:</strong>
+                <span className={styles.activity__date}>{formatDate(new Date(Number(createdAt)).toDateString())}</span>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </Container>
+          ))}
+        </div>
+      </Container>
+    </>
   )
 }
 
