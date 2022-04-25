@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import { withApollo } from '../../utils'
-import { useScoresQuery } from '../../generated/graphql'
+import { useScoresQuery, Score, ScoreQuery, ScoresQuery } from '../../generated/graphql'
 import { BackArrow, Button, Container, MoonIcon, PageHeader, SuspenseSpinner } from '../../components'
 import { formatDate, formatToHours } from '../../utils/misc'
 import { useNavigate } from 'react-router-dom'
 import styles from './activity.module.css'
 
 const Activity = () => {
-  const { data, loading, error } = useScoresQuery({ variables: { limit: 6, cursor: '' } })
+  const { data, loading, error, fetchMore, variables } = useScoresQuery({ variables: { limit: 4, cursor: null } })
   const navigate = useNavigate()
 
   if (data?.scores.scores.length === 0) return navigate('/')
@@ -31,31 +31,68 @@ const Activity = () => {
       </PageHeader>
       <Container maxW="50rem">
         <div className={styles.activity__grid}>
-          {data?.scores.scores.map(({ duration_asleep, duration_in_bed, score, id, createdAt }) => (
-            <div key={id} className={styles.activity__card} onClick={() => navigate(`/activity/${id}`)}>
-              <div className={styles.activity__container}>
-                <div className={styles.activity__content}>
-                  <span>
-                    <strong className={styles.activity__title}>Duration in bed:</strong>{' '}
-                    {formatToHours(Number(duration_in_bed))}
-                  </span>
-                  <span>
-                    <strong className={styles.activity__title}>Duration asleep:</strong>{' '}
-                    {formatToHours(Number(duration_asleep))}
-                  </span>
-                  <span>
-                    <strong className={styles.activity__title}>Score:</strong> {score}
+          {data!.scores.scores.map((score) =>
+            !score ? null : (
+              <div key={score.id} className={styles.activity__card} onClick={() => navigate(`/activity/${score.id}`)}>
+                <div className={styles.activity__container}>
+                  <div className={styles.activity__content}>
+                    <span>
+                      <strong className={styles.activity__title}>Duration in bed:</strong>{' '}
+                      {formatToHours(Number(score.duration_in_bed))}
+                    </span>
+                    <span>
+                      <strong className={styles.activity__title}>Duration asleep:</strong>{' '}
+                      {formatToHours(Number(score.duration_asleep))}
+                    </span>
+                    <span>
+                      <strong className={styles.activity__title}>Score:</strong> {score.score}
+                    </span>
+                  </div>
+                  <MoonIcon width="2rem" height="2rem" />
+                </div>
+
+                <div className={styles['activity__footer--container']}>
+                  <strong className={styles.activity__title}>Created at:</strong>
+                  <span className={styles.activity__date}>
+                    {formatDate(new Date(Number(score.createdAt)).toDateString())}
                   </span>
                 </div>
-                <MoonIcon width="2rem" height="2rem" />
               </div>
+            ),
+          )}
+          {data && data.scores.hasMore ? (
+            <div>
+              <Button
+                onClick={() => {
+                  fetchMore({
+                    variables: {
+                      limit: variables?.limit,
+                      cursor: data.scores.scores[data.scores.scores.length - 1].createdAt,
+                    },
+                    updateQuery: (previousValue, { fetchMoreResult }): ScoresQuery => {
+                      if (!fetchMoreResult) {
+                        return previousValue as ScoresQuery
+                      }
 
-              <div className={styles['activity__footer--container']}>
-                <strong className={styles.activity__title}>Created at:</strong>
-                <span className={styles.activity__date}>{formatDate(new Date(Number(createdAt)).toDateString())}</span>
-              </div>
+                      return {
+                        __typename: 'Query',
+                        scores: {
+                          __typename: 'PaginatedScores',
+                          hasMore: (fetchMoreResult as ScoresQuery).scores.hasMore,
+                          scores: [
+                            ...(previousValue as ScoresQuery).scores.scores,
+                            ...(fetchMoreResult as ScoresQuery).scores.scores,
+                          ],
+                        },
+                      }
+                    },
+                  })
+                }}
+              >
+                Load more
+              </Button>
             </div>
-          ))}
+          ) : null}
         </div>
       </Container>
     </>
